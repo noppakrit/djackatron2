@@ -11,15 +11,16 @@ import com.test.djackatron2.model.FeePolicy;
 
 
 
+
 import static org.mockito.Mockito.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-public class TestTransferReciept {
+public class TestTransferRecieptException {
 
-	@Test
-	public void test() {
+	@Test(expected=InsufficientFundException.class)
+	public void testException() throws InsufficientFundException {
 		//given
-		double tranAmount = 30;
+		double tranAmount = 100.1;
 		
 		
 		double feeRate = 5.0d;
@@ -56,8 +57,7 @@ public class TestTransferReciept {
 		
 		
 		//then
-		assertThat(scrAccount.getBalance(), equalTo(65.0d));
-		assertThat(destAccount.getBalance(), equalTo(30.0d));
+		fail();
 	
 		
 	}

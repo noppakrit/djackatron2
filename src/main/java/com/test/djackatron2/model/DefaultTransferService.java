@@ -1,5 +1,7 @@
 package com.test.djackatron2.model;
 
+import com.test.djackatron2.service.InsufficientFundException;
+
 public class DefaultTransferService {
 
 	private AccountRepository accountRepository;
@@ -13,12 +15,24 @@ public class DefaultTransferService {
 		this.accountRepository = _accountRepo;
 	}
 	
-	public void transfer(double _tranAmount, String _scrAccountNo, String _destAccountNo) {
+	public void transfer(double _tranAmount, String _scrAccountNo, String _destAccountNo) throws InsufficientFundException {
+		
+		
+		
 		Account scrAccount = accountRepository.find(_scrAccountNo);
 		Account destAccount = accountRepository.find(_destAccountNo); 
 		
+		
+		if(scrAccount.getBalance()-this.fee.getCalFee(_tranAmount)-_tranAmount <= 0) {
+			throw new InsufficientFundException();
+		}
+			
+			
 		scrAccount.setBalance(scrAccount.getBalance()-_tranAmount-this.fee.getCalFee(_tranAmount));
 		destAccount.setBalance(destAccount.getBalance()+_tranAmount);
+		
+		
+		
 	}
 	
 }
