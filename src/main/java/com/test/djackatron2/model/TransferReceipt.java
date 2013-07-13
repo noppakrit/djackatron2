@@ -1,6 +1,6 @@
 package com.test.djackatron2.model;
 
-public class TrabsferReceipt {
+public class TransferReceipt {
 	
 	private String myAccountNo;
 	private String destAccountNo;

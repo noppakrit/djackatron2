@@ -2,46 +2,59 @@ package com.test.djackatron2.service;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
 
 import com.test.djackatron2.model.FeePolicy;
 
+
+import static org.hamcrest.CoreMatchers.equalTo;
+
+@RunWith(value=Parameterized.class)
 public class TestFeePolicy {
+
 
 	
 	private FeePolicy fee;
 	
-	@Before
-	public void newFeePolicy() {
-		fee = new FeePolicy();
+	double fixRate, amount, expectedFee;
+	
+	
+	public  TestFeePolicy(double fixRate, double amount, double expectedFee) {
+		this.fixRate = fixRate;
+		this.amount = amount;
+		this.expectedFee = expectedFee;
 	}
 	
-	@Test
-	public void testFeeStaticWithSetMethod() {
-		fee.setFee(10.0d);
-		assertEquals((Double)10.0d, fee.getFee());
-	
+	@Parameters
+	public static Collection<Object[]> primeNumber() {
+		return Arrays.asList(new Object[][]{
+				{5,1,5},
+				{5,10,5}
+				});
 	}
 	
-	@Test
-	public void testFeeStaticWithConstructure() {
-		FeePolicy fee = new FeePolicy((Double)10.0d);
-		assertEquals((Double)10.0d, fee.getFee());
-	
-	}
-	
-	
-	@Test
-	public void testFeeNull() {
-		fee.setFee((Double)null);
-		assertNull(fee.getFee());
-	}
+		
+
+
 	
 	@Test
 	public void testCalFee() {
-		fee.setFee((Double)10.0d);
-		assertEquals((Double)10.0d, fee.getCalFee((Double)10.0d));
+		double rate = fixRate;
+		fee = new FeePolicy(rate);
+		double expFee = this.expectedFee;
+		double calFee = fee.getCalFee(this.amount);
+		assertThat(expFee, equalTo(calFee));
 	}
+
+
 
 }
