@@ -2,7 +2,6 @@ package com.test.djackatron2.service;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.test.djackatron2.model.Account;
@@ -14,33 +13,34 @@ import com.test.djackatron2.model.FeePolicy;
 
 
 import static org.mockito.Mockito.*;
+import static org.hamcrest.CoreMatchers.equalTo;
 
+public class TestTransferRecieptLessTransferException {
 
-public class TestTransferRecieptException {
-
-	private DefaultTransferService transferService ;
-	private Account scrAccount;
-	private Account destAccount ;
-	private String scrAccountNo;
-	private String destAccountNo;
-	
-	@Before
-	public void setup(){
-        double feeRate = 5.0d;
+	@Test(expected=illegalTransferException.class)
+	public void testException()  {
+		//given
+		double tranAmount = 9.99999999d;
 		
-		 scrAccountNo = "NPK001";
+		
+		double feeRate = 5.0d;
+		
+		String scrAccountNo = "NPK001";
 		double scrBalance = 100.0d;
-		scrAccount = new Account(scrAccountNo, scrBalance);
+		Account scrAccount = new Account(scrAccountNo, scrBalance);
 	
 		
 		
-		destAccountNo = "DEST001";
+		String destAccountNo = "DEST001";
 		double destBalance = 0.0d;
-		destAccount = new Account(destAccountNo,destBalance);
+		Account destAccount = new Account(destAccountNo,destBalance);
 		
 		
-		transferService = new DefaultTransferService();
+		
+		DefaultTransferService transferService = new DefaultTransferService();
 
+		
+		
 		FeePolicy feePolicy = mock(FeePolicy.class);
 		when(feePolicy.getCalFee(anyDouble())).thenReturn(feeRate);
 		
@@ -51,19 +51,8 @@ public class TestTransferRecieptException {
 		
 		
 		transferService.setFeePolicy(feePolicy);
+		transferService.setMinimumTransfer(10.0d);
 		transferService.setAccountRepository(accountRepository);
-		
-	}
-	
-	
-	@Test(expected=InsufficientFundException.class)
-	public void testException()  {
-		//given
-		double tranAmount = 95.0d;
-		
-		
-		
-		
 		
 		
 		//when
