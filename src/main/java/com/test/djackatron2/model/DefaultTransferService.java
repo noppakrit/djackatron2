@@ -7,11 +7,17 @@ public class DefaultTransferService {
 
 	private AccountRepository accountRepository;
 	private FeePolicy fee;
+	private VariableFeePolicy variableFee;
 	private double minTransfer;
 	
 	public void setFeePolicy(FeePolicy _fee) {
 		this.fee = _fee;
 	}
+	
+	public void setVariableFeePolicy(VariableFeePolicy _variableFee) {
+		this.variableFee = _variableFee;
+	}
+	
 	
 	public void setMinimumTransfer(double _minTransfer) {
 		this.minTransfer = _minTransfer;
